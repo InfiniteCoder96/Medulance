@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference locationRef;
+    private DatabaseReference dateRef;
     private FusedLocationProviderClient fusedLocationClient;
     private String origin = "";
     private final static int REQUEST_CODE_ASK_PERMISSIONS = 1;
@@ -135,12 +136,34 @@ public class MainActivity extends AppCompatActivity
                 Long tsLong = System.currentTimeMillis()/1000;
                 String ts = tsLong.toString();
 
+                HashMap usermap=new HashMap();
+                getMyLocation();
+                usermap.put("Date", ts);
+                usermap.put("Location1", location1.getText().toString());
 
-                DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("Location").child(UID);
-
-                dateRef.child("Date").setValue(ts);
+                dateRef = FirebaseDatabase.getInstance().getReference().child("Location").child(UID);
 
 
+
+                dateRef.updateChildren(usermap).addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task)
+                    {
+                        if(task.isSuccessful())
+                        {
+
+
+
+                        }
+                        else
+                        {
+
+                        }
+
+
+                    }
+
+                });
 
 
 
