@@ -140,14 +140,14 @@ public class MainActivity extends AppCompatActivity
 
                 dateRef.child("Date").setValue(ts);
 
-                DatabaseReference locRef = FirebaseDatabase.getInstance().getReference().child("Location").child(UID);
-                locRef.child("location1").setValue(location1.getText());
+
 
 
 
                 DatabaseReference nearHosplocationRef = FirebaseDatabase.getInstance().getReference().child("Location").child(UID).child("SOS");
 
                 nearHosplocationRef.updateChildren(nearHosp).addOnCompleteListener(new OnCompleteListener() {
+
                     @Override
                     public void onComplete(@NonNull Task task)
                     {
