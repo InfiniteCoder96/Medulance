@@ -38,10 +38,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -118,11 +122,28 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                progressDialog.setMessage("Updating Location...");
+                progressDialog.setMessage("Processing SOS Request...");
                 progressDialog.show();
                 progressDialog.setCanceledOnTouchOutside(false);
+
                 HashMap nearHosp =new HashMap();
-                nearHosp.put("Nearest Hospital", "6.919194, 79.869568");
+                HashMap reqDate =new HashMap();
+
+
+                nearHosp.put("Nearest Hospital", "6.919194,79.869568");
+
+                Long tsLong = System.currentTimeMillis()/1000;
+                String ts = tsLong.toString();
+
+
+                DatabaseReference dateRef = FirebaseDatabase.getInstance().getReference().child("Location").child(UID);
+
+                dateRef.child("Date").setValue(ts);
+
+                DatabaseReference locRef = FirebaseDatabase.getInstance().getReference().child("Location").child(UID);
+                locRef.child("location1").setValue(location1.getText());
+
+
 
                 DatabaseReference nearHosplocationRef = FirebaseDatabase.getInstance().getReference().child("Location").child(UID).child("SOS");
 
@@ -134,8 +155,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             progressDialog.dismiss();
                             Toast.makeText(MainActivity.this,"Location Updated!!", Toast.LENGTH_SHORT).show();
-                            location1.setText(" ");
-                            location2.setText(" ");
+
 
 
                         }
@@ -173,6 +193,11 @@ public class MainActivity extends AppCompatActivity
             progressDialog.show();
             progressDialog.setCanceledOnTouchOutside(false);
             HashMap usermap=new HashMap();
+
+            Long tsLong = System.currentTimeMillis()/1000;
+            String ts = tsLong.toString();
+
+            usermap.put("Date", ts);
             usermap.put("Location1", Location1);
             usermap.put("Location2", Location2);
             usermap.put("SOS", false);
